@@ -1,0 +1,5 @@
+package com.zpl.service;
+
+public interface IBasicService {
+
+}

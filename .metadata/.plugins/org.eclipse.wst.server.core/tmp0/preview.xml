@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<server port="8080">
+  <module context="logistics-manager-web" name="logistics-manager-web" path="D:/JavaStudy/eclipsewokspaces/logistics-0621/.metadata/.plugins/org.eclipse.wst.server.core/tmp0/logistics-manager-web" type="j2ee"/>
+</server>

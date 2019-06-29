@@ -1,0 +1,86 @@
+package com.zpl.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+
+import com.zpl.dto.UserDto;
+import com.zpl.mapper.RoleMapper;
+import com.zpl.mapper.UserMapper;
+import com.zpl.pojo.Role;
+import com.zpl.pojo.RoleExample;
+import com.zpl.pojo.User;
+import com.zpl.pojo.UserExample;
+import com.zpl.service.IUserService;
+@Service
+public class UserServiceImpl implements IUserService{
+	
+	@Autowired
+	private UserMapper userMapper;
+	@Autowired
+	private RoleMapper roleMapper;
+	
+	@Override
+	public List<User> query() {
+		UserExample example = new UserExample();
+		return userMapper.selectByExample(example);
+	}
+
+	@Override
+	public Integer addUser(User user){
+		// TODO Auto-generated method stub
+		return userMapper.insertSelective(user);
+	}
+
+	@Override
+	public Integer updateUser(User user) {
+		// TODO Auto-generated method stub
+		return userMapper.updateByPrimaryKey(user);
+	}
+
+	@Override
+	public Integer deleteUser(Integer id) {
+		// TODO Auto-generated method stub
+		return userMapper.deleteByPrimaryKey(id);
+	}
+
+	@Override
+	public User queryById(Integer id) {
+		// TODO Auto-generated method stub
+		return userMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public void getUpdateUserInfo(Integer id, Model m) {
+		RoleExample roleExample = new RoleExample();
+		List<Role> roles = roleMapper.selectByExample(roleExample);
+		m.addAttribute("roles", roles);
+	}
+
+	@Override
+	public void saveOrUpdate(UserDto userDto) {
+		// TODO Auto-generated method stub
+		// 获取User对象
+		User user = userDto.getUser();
+		// 获取关联的角色信息
+		List<Integer> roleIds = userDto.getRoleIds();
+		// 判断是添加还是修改数据
+		if(user.getUserId()!=null && user.getUserId() > 0){
+			// 表示userId存在，说明是更新
+		}else{
+			// 不存在id说明是添加数据
+			// 先添加用户数据 获取生成的userId
+			//userMapper.insertSelective(user);
+			this.addUser(user);
+			// 再保存用户和角色的对应关系，在一个事务中处理
+			if(roleIds!=null && roleIds.size() > 0){
+				for (Integer roleId : roleIds) {
+					userMapper.inserUserIdAndRoleId(user.getUserId(),roleId);
+				}
+			}
+			
+		}
+	}
+}

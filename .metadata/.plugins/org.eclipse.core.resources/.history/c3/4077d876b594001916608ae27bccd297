@@ -1,0 +1,26 @@
+package com.zpl.dto;
+
+import java.util.List;
+
+import com.zpl.pojo.User;
+
+public class UserDto {
+	//用户信息
+	private User use;
+	//关联分配的角色信息id
+	private List<Integer> roles;
+	public User getUse() {
+		return use;
+	}
+	public void setUse(User use) {
+		this.use = use;
+	}
+	public List<Integer> getRoles() {
+		return roles;
+	}
+	public void setRoles(List<Integer> roles) {
+		this.roles = roles;
+	}
+	
+	
+}

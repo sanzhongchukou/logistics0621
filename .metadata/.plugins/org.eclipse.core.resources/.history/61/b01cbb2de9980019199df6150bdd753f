@@ -1,0 +1,50 @@
+package com.zpl.controller;
+
+import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.github.pagehelper.PageInfo;
+import com.zpl.dto.CustomerDto;
+import com.zpl.pojo.Customer;
+import com.zpl.pojo.User;
+import com.zpl.service.ICustomerService;
+import com.zpl.utils.Constant;
+
+@Controller
+@RequestMapping("/customer")
+public class CustomerController {
+	@Autowired
+	private ICustomerService customerService;
+	
+	@RequestMapping("/query")
+	public String query(CustomerDto dto,Model m){
+		// 获取登录用户信息
+		User user = (User) SecurityUtils.getSubject().getPrincipal();
+		
+		System.out.println("--->"+user.getUserId());
+		PageInfo<CustomerDto> list = customerService.queryPage(dto,user);
+		m.addAttribute(Constant.PAGE_MODEL, list);
+		return "customer/customer";
+	}
+	
+	@RequestMapping("/customerUpdate")
+	public String customerUpdate(Integer id,Model model){
+		customerService.getUpdateInfo(id, model);
+		return "customer/customerUpdate";
+	}
+	@RequestMapping("/saveOrUpdate")
+	public String saveOrUpdate(Customer customer) {
+		if(customer.getCustomerId()!=null && !"".equals(customer.getCustomerId())){
+			// 更新
+		}else{
+			// 添加
+			customerService.addCustomer(customer);
+		}
+		return "customer/query";
+	}
+	
+	
+}

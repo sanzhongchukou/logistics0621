@@ -1,0 +1,48 @@
+package com.zpl.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.github.pagehelper.PageInfo;
+import com.zpl.dto.BasicDto;
+import com.zpl.mapper.BasicDataMapper;
+import com.zpl.pojo.BasicData;
+import com.zpl.pojo.BasicDataExample;
+import com.zpl.service.IBasicService;
+
+public class BasicServiceImpl implements IBasicService {
+	@Autowired
+	private BasicDataMapper basicMapper;
+
+	@Override
+	public List<BasicData> query(BasicData bd) {
+		BasicDataExample example = new BasicDataExample();
+		return basicMapper.selectByExample(example);
+	}
+
+	@Override
+	public PageInfo<BasicData> queryPage(BasicDto dto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void addBasicData(BasicData bd) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void deleteBasicData(int id) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void updateBasicData(BasicData bd) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
+
+}

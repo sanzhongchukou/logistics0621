@@ -1,0 +1,16 @@
+package com.zpl.service.impl;
+
+import com.github.pagehelper.PageInfo;
+import com.zpl.dto.CustomerDto;
+import com.zpl.pojo.User;
+import com.zpl.service.ICustomerService;
+
+public class CustomerServiceImpl implements ICustomerService {
+
+	@Override
+	public PageInfo<CustomerDto> queryPage(CustomerDto dto, User user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

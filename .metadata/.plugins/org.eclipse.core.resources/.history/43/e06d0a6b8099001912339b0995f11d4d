@@ -1,0 +1,7 @@
+package com.zpl.service.impl;
+
+import com.zpl.service.IOrderService;
+
+public class OrderServiceImpl implements IOrderService {
+
+}

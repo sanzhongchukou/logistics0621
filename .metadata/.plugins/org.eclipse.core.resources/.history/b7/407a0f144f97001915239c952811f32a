@@ -1,0 +1,5 @@
+package com.zpl.dto;
+
+public class BasicDto {
+
+}

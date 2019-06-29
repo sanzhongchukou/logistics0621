@@ -1,0 +1,22 @@
+package com.zpl.service;
+
+import java.util.List;
+
+import org.springframework.ui.Model;
+
+import com.zpl.pojo.User;
+
+public interface IUserService {
+	
+	public List<User> query();
+	
+	public Integer addRole(User user);
+	
+	public Integer updateRole(User user);
+	
+	public Integer deleteRole(Integer id);
+	
+	public User queryById(Integer id);
+
+	public List<User> getUpdateUserInfo(Integer id, Model m);
+}

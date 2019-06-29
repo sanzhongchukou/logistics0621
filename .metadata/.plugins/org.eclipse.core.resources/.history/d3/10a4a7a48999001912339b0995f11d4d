@@ -1,0 +1,9 @@
+package com.zpl.service;
+
+import org.springframework.ui.Model;
+
+public interface IOrderService {
+
+	void getUpdateInfo(Integer id, Model m);
+
+}

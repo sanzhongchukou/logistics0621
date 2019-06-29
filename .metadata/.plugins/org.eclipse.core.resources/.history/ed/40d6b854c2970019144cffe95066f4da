@@ -1,0 +1,51 @@
+package com.zpl.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.zpl.dto.BasicDto;
+import com.zpl.mapper.BasicDataMapper;
+import com.zpl.pojo.BasicData;
+import com.zpl.pojo.BasicDataExample;
+import com.zpl.service.IBasicService;
+@Service
+public class BasicServiceImpl implements IBasicService {
+	@Autowired
+	private BasicDataMapper basicMapper;
+
+	@Override
+	public List<BasicData> query(BasicData bd) {
+		BasicDataExample example = new BasicDataExample();
+		return basicMapper.selectByExample(example);
+	}
+
+	@Override
+	public PageInfo<BasicData> queryPage(BasicDto dto) {
+		PageHelper.startPage(dto.getPageNum(), dto.getPageSize());
+		List<BasicData> list = this.query(dto.getBasicData());
+		return new PageInfo<>(list);
+	}
+
+	@Override
+	public void addBasicData(BasicData bd) throws Exception {
+		basicMapper.insertSelective(bd);
+
+	}
+
+	@Override
+	public void deleteBasicData(Integer id) throws Exception {
+		basicMapper.deleteByPrimaryKey(id);
+
+	}
+
+	@Override
+	public void updateBasicData(BasicData bd) throws Exception {
+		basicMapper.updateByPrimaryKeySelective(bd);
+
+	}
+
+}

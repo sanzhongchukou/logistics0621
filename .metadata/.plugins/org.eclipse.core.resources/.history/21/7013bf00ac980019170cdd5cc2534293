@@ -1,0 +1,52 @@
+package com.zpl.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.zpl.dto.CustomerDto;
+import com.zpl.pojo.Customer;
+import com.zpl.pojo.Role;
+import com.zpl.pojo.User;
+import com.zpl.service.ICustomerService;
+import com.zpl.service.IUserService;
+import com.zpl.utils.Constant;
+@Service
+public class CustomerServiceImpl implements ICustomerService {
+	@Autowired
+	private IUserService userService;
+	/**
+	 * 当前用户如果是  业务员 只能查看所属的客户
+	 * 如果是 操作员 或者 管理员 能查看所有的客户
+	 */
+	@Override
+	public PageInfo<CustomerDto> queryPage(CustomerDto dto,User user) {
+		PageHelper.startPage(dto.getPageNum(), dto.getPageSize());
+		
+		// 获取角色信息
+		List<Role> list = userService.queryRoleByUserId(user.getUserId());
+		boolean flag = false;
+		if(list != null && list.size() > 0){
+			for (Role role : list) {
+				if(Constant.ROLE_ADMIN.equals(role.getRoleName()) 
+						|| Constant.ROLE_OPERATOR.equals(role.getRoleName())){
+					// 拥有操作员或者管理员的身份，查询所有的客户信息
+					flag = true;
+					break;
+				}
+			}
+		}
+		// 业务员 限制查询
+		Customer customer = new Customer();
+		if(flag == false){
+			customer.setUserId(user.getUserId());
+		}
+		List<CustomerDto> customers = customerMapper.queryView(customer);
+		return new PageInfo<>(customers);
+	}
+
+
+}

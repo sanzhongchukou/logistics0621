@@ -1,0 +1,5 @@
+package com.zpl.service.impl;
+
+public interface IOrderService {
+
+}

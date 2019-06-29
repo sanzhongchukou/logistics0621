@@ -1,0 +1,72 @@
+package com.zpl.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.zpl.dto.BasicDto;
+import com.zpl.mapper.BasicDataMapper;
+import com.zpl.pojo.BasicData;
+import com.zpl.pojo.BasicDataExample;
+import com.zpl.service.IBasicService;
+@Service
+public class BasicServiceImpl implements IBasicService {
+	@Autowired
+	private BasicDataMapper basicMapper;
+
+	@Override
+	public List<BasicData> query(BasicData bd) {
+		BasicDataExample example = new BasicDataExample();
+		return basicMapper.selectByExample(example);
+	}
+
+	@Override
+	public PageInfo<BasicData> queryPage(BasicDto dto) {
+		PageHelper.startPage(dto.getPageNum(), dto.getPageSize());
+		List<BasicData> list = this.query(dto.getBasicData());
+		return new PageInfo<>(list);
+	}
+
+	@Override
+	public void addBasicData(BasicData bd) throws Exception {
+		basicMapper.insertSelective(bd);
+
+	}
+
+	@Override
+	public void deleteBasicData(Integer id) throws Exception {
+		basicMapper.deleteByPrimaryKey(id);
+
+	}
+
+	@Override
+	public void updateBasicData(BasicData bd) throws Exception {
+		basicMapper.updateByPrimaryKeySelective(bd);
+
+	}
+
+	@Override
+	public void getUpdateBasicInfo(Integer id, Model m) {
+		BasicDataExample example = new BasicDataExample();
+		example.createCriteria().andParentIdIsNull();
+		// 查询所有的父类型
+		List<BasicData> parents = basicMapper.selectByExample(example);
+		m.addAttribute("parents", parents);
+		if (id != null && id > 0) {
+			// 表示是更新数据，根据id查询出对应的数据信息
+			BasicData data = basicMapper.selectByPrimaryKey(id);
+			m.addAttribute("basic", data);
+		}
+	}
+
+	@Override
+	public List<BasicData> getBasicDataByParentName(String basicCommonInterval) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
